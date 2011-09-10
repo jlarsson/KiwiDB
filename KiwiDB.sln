@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KiwiDb", "KiwiDb\KiwiDb.csproj", "{DE9B2945-9E1F-4C4B-8E35-109B5EFABC24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KiwiDb.PerformanceTests", "KiwiDb.PerformanceTests\KiwiDb.PerformanceTests.csproj", "{82CA6FFC-4D4E-4FD2-B708-97AB752DF9BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KiwiDb.Tests", "KiwiDb.Tests\KiwiDb.Tests.csproj", "{C3B7812B-E844-4A03-A974-A4765AA3C981}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "json", "json", "{5FEED035-BB60-4944-80F5-2591E240F2E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kiwi.Json", "lib\Kiwi.Json\Kiwi.Json\Kiwi.Json.csproj", "{C32E21F8-0929-45BC-9643-0F1DE746A4CD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DE9B2945-9E1F-4C4B-8E35-109B5EFABC24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE9B2945-9E1F-4C4B-8E35-109B5EFABC24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE9B2945-9E1F-4C4B-8E35-109B5EFABC24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE9B2945-9E1F-4C4B-8E35-109B5EFABC24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82CA6FFC-4D4E-4FD2-B708-97AB752DF9BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82CA6FFC-4D4E-4FD2-B708-97AB752DF9BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82CA6FFC-4D4E-4FD2-B708-97AB752DF9BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82CA6FFC-4D4E-4FD2-B708-97AB752DF9BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3B7812B-E844-4A03-A974-A4765AA3C981}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3B7812B-E844-4A03-A974-A4765AA3C981}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3B7812B-E844-4A03-A974-A4765AA3C981}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3B7812B-E844-4A03-A974-A4765AA3C981}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C32E21F8-0929-45BC-9643-0F1DE746A4CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C32E21F8-0929-45BC-9643-0F1DE746A4CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C32E21F8-0929-45BC-9643-0F1DE746A4CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C32E21F8-0929-45BC-9643-0F1DE746A4CD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C32E21F8-0929-45BC-9643-0F1DE746A4CD} = {5FEED035-BB60-4944-80F5-2591E240F2E7}
+	EndGlobalSection
+EndGlobal

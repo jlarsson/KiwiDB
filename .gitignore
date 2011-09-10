@@ -1,0 +1,9 @@
+packages/
+bin/
+obj/
+*.user
+*.suo
+*.pdb
+*.nupkg
+_resharper*
+Thumbs.db
