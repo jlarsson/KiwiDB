@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using KiwiDb.Gist.Extensions;
+using KiwiDb.Util;
 
 namespace KiwiDb.Gist.Tree
 {
@@ -87,7 +88,7 @@ namespace KiwiDb.Gist.Tree
             {
                 if (_records.Find(_key).Take(1).Count() > 0)
                 {
-                    throw new ArgumentException(string.Format("A record with key \"{0}\" already exists", _key));
+                    throw Verify.DuplicateKey(_key);
                 }
             }
 

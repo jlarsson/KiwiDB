@@ -7,6 +7,10 @@ namespace KiwiDb.JsonDb
 {
     public static class CollectionExtensions
     {
+        public static void EnsureIndex(this ICollection collection, string memberPath)
+        {
+            collection.EnsureIndex(memberPath, new IndexOptions());
+        }
         public static T Get<T>(this ICollection collection, string key) where T : class
         {
             var obj = collection.Get(key);

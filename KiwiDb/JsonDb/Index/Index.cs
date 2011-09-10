@@ -9,14 +9,15 @@ namespace KiwiDb.JsonDb.Index
     public class Index : Gist<IndexValue, string>, IIndex
     {
         public Index(IBlockReference blockReference, IndexDefinition indexDefinition)
-            : base(blockReference, new GistConfig<IndexValue, string>
-                                       {
-                                           Blocks = blockReference.Blocks,
-                                           UpdateStrategy = UpdateStrategy<IndexValue, string>.AppendKey,
-                                           Ext =
-                                               new OrderedGistExtension<IndexValue, string>(new GistIndexValueType(),
-                                                                                            new GistStringType())
-                                       })
+            : base(blockReference, indexDefinition.CreateGistConfig(blockReference.Blocks))
+            //: base(blockReference, new GistConfig<IndexValue, string>
+            //                           {
+            //                               Blocks = blockReference.Blocks,
+            //                               UpdateStrategy = UpdateStrategy<IndexValue, string>.AppendKey,
+            //                               Ext =
+            //                                   new OrderedGistExtension<IndexValue, string>(new GistIndexValueType(),
+            //                                                                                new GistStringType())
+            //                           })
         {
         }
 

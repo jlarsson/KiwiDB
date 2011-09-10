@@ -56,7 +56,7 @@ namespace KiwiDb.Storage
                 {
                     return opener();
                 }
-                catch (FileNotFoundException e)
+                catch (FileNotFoundException)
                 {
                     createIfMissing();
                 }

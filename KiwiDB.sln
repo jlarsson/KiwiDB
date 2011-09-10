@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KiwiDb.PerformanceTests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KiwiDb.Tests", "KiwiDb.Tests\KiwiDb.Tests.csproj", "{C3B7812B-E844-4A03-A974-A4765AA3C981}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "json", "json", "{5FEED035-BB60-4944-80F5-2591E240F2E7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kiwi.Json", "lib\Kiwi.Json\Kiwi.Json\Kiwi.Json.csproj", "{C32E21F8-0929-45BC-9643-0F1DE746A4CD}"
 EndProject
 Global
@@ -36,8 +34,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{C32E21F8-0929-45BC-9643-0F1DE746A4CD} = {5FEED035-BB60-4944-80F5-2591E240F2E7}
 	EndGlobalSection
 EndGlobal

@@ -52,13 +52,14 @@ namespace KiwiDb.JsonDb
                                            });
         }
 
-        public virtual void EnsureIndex(string memberPath)
+        public virtual void EnsureIndex(string memberPath, IndexOptions options)
         {
             ExecuteWriteSession(session =>
                                     {
                                         session.IndexCatalog.EnsureIndex(new IndexDefinition
                                                                              {
-                                                                                 Path = memberPath
+                                                                                 Path = memberPath,
+                                                                                 Options = options
                                                                              });
                                         return true;
                                     });

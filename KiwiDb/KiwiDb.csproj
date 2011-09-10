@@ -37,6 +37,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DuplicateKeyException.cs" />
     <Compile Include="Gist\Tree\AppendKey.cs" />
     <Compile Include="Gist\Tree\UniqueKey.cs" />
     <Compile Include="Gist\Tree\UpdateKey.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="Gist\Tree\IUpdateStrategy.cs" />
     <Compile Include="JsonDb\CollectionBase.cs" />
     <Compile Include="JsonDb\CollectionExtensions.cs" />
+    <Compile Include="JsonDb\DateIndexOptions.cs" />
     <Compile Include="JsonDb\Filter\ArrayMatcher.cs" />
     <Compile Include="JsonDb\Filter\BoolMatcher.cs" />
     <Compile Include="JsonDb\Filter\Class1.cs" />
@@ -72,6 +74,7 @@
     <Compile Include="JsonDb\GistJsonType.cs" />
     <Compile Include="JsonDb\ICollection.cs" />
     <Compile Include="JsonDb\Index\GistIndexValueType.cs" />
+    <Compile Include="JsonDb\Index\IgnoreTimeOfDayComparer.cs" />
     <Compile Include="JsonDb\Index\IIndex.cs" />
     <Compile Include="JsonDb\Index\IIndexCatalog.cs" />
     <Compile Include="JsonDb\Index\IIndexValueFactory.cs" />
@@ -79,6 +82,7 @@
     <Compile Include="JsonDb\Index\Index.cs" />
     <Compile Include="JsonDb\Index\IndexCatalog.cs" />
     <Compile Include="JsonDb\Index\IndexDefinition.cs" />
+    <Compile Include="JsonDb\IndexOptions.cs" />
     <Compile Include="JsonDb\Index\IndexValue.cs" />
     <Compile Include="JsonDb\Index\IndexValueFactory.cs" />
     <Compile Include="JsonDb\Index\IndexValueType.cs" />
@@ -86,6 +90,8 @@
     <Compile Include="JsonDb\ISession.cs" />
     <Compile Include="JsonDb\Session.cs" />
     <Compile Include="JsonDb\SessionCollection.cs" />
+    <Compile Include="JsonDb\StringIndexOptions.cs" />
+    <Compile Include="KiwiDbException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage\Block.cs" />
     <Compile Include="Storage\BlockIdSet.cs" />
@@ -116,7 +122,7 @@
     <Compile Include="Util\Verify.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Kiwi.Json\Kiwi.Json\Kiwi.Json.csproj">
+    <ProjectReference Include="..\lib\Kiwi.Json\Kiwi.Json\Kiwi.Json.csproj">
       <Project>{C32E21F8-0929-45BC-9643-0F1DE746A4CD}</Project>
       <Name>Kiwi.Json</Name>
     </ProjectReference>

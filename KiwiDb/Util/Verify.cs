@@ -11,5 +11,10 @@ namespace KiwiDb.Util
                 throw new ArgumentException(string.Format(format, args));
             }
         }
+
+        public static Exception DuplicateKey(object duplicateKeyValue)
+        {
+            return new DuplicateKeyException(duplicateKeyValue);
+        }
     }
 }

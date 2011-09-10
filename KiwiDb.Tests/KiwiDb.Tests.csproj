@@ -55,25 +55,25 @@
     <Compile Include="Gist\UpdateStrategies\UpdateExistingKeyFixture.cs" />
     <Compile Include="JsonDb\Filter\JsonFilterFixture.cs" />
     <Compile Include="JsonDb\FindFixture.cs" />
+    <Compile Include="JsonDb\Index\DateIndexFixture.cs" />
     <Compile Include="JsonDb\Index\IndexValueFactoryFixture.cs" />
+    <Compile Include="JsonDb\Index\StringIndexFixture.cs" />
     <Compile Include="JsonDb\IsolatedDatabaseFixture.cs" />
     <Compile Include="JsonDb\ScratchPad.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Gist\UpdateStrategies\UniqueKeyFixture.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Kiwi.Json\Kiwi.Json\Kiwi.Json.csproj">
-      <Project>{C32E21F8-0929-45BC-9643-0F1DE746A4CD}</Project>
-      <Name>Kiwi.Json</Name>
-    </ProjectReference>
     <ProjectReference Include="..\KiwiDb\KiwiDb.csproj">
       <Project>{DE9B2945-9E1F-4C4B-8E35-109B5EFABC24}</Project>
       <Name>KiwiDb</Name>
     </ProjectReference>
+    <ProjectReference Include="..\lib\Kiwi.Json\Kiwi.Json\Kiwi.Json.csproj">
+      <Project>{C32E21F8-0929-45BC-9643-0F1DE746A4CD}</Project>
+      <Name>Kiwi.Json</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="JsonDb\JPath\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
