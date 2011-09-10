@@ -116,7 +116,7 @@
     <Compile Include="Util\Verify.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Kiwi.Json\Kiwi.Json\Kiwi.Json.csproj">
+    <ProjectReference Include="..\lib\Kiwi.Json\Kiwi.Json\Kiwi.Json.csproj">
       <Project>{C32E21F8-0929-45BC-9643-0F1DE746A4CD}</Project>
       <Name>Kiwi.Json</Name>
     </ProjectReference>
