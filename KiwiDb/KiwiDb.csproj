@@ -63,7 +63,7 @@
     <Compile Include="JsonDb\DateIndexOptions.cs" />
     <Compile Include="JsonDb\Filter\ArrayMatcher.cs" />
     <Compile Include="JsonDb\Filter\BoolMatcher.cs" />
-    <Compile Include="JsonDb\Filter\Class1.cs" />
+    <Compile Include="JsonDb\Filter\ObjectMatcher.cs" />
     <Compile Include="JsonDb\Filter\DateMatcher.cs" />
     <Compile Include="JsonDb\Filter\DoubleMatcher.cs" />
     <Compile Include="JsonDb\Filter\IJsonFilter.cs" />
@@ -72,6 +72,7 @@
     <Compile Include="JsonDb\Filter\JsonFilterExtensions.cs" />
     <Compile Include="JsonDb\Filter\Matcher.cs" />
     <Compile Include="JsonDb\Filter\MatcherFactory.cs" />
+    <Compile Include="JsonDb\Filter\NullMatcher.cs" />
     <Compile Include="JsonDb\Filter\StringMatcher.cs" />
     <Compile Include="JsonDb\GistJsonType.cs" />
     <Compile Include="JsonDb\ICollection.cs" />
