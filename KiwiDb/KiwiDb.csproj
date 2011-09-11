@@ -122,6 +122,7 @@
     <Compile Include="Gist\Tree\Node.cs" />
     <Compile Include="Gist\Tree\NodeFlags.cs" />
     <Compile Include="Util\EnumerableExtensions.cs" />
+    <Compile Include="Util\FairFileAccessScheduler.cs" />
     <Compile Include="Util\Magic.cs" />
     <Compile Include="Util\Size.cs" />
     <Compile Include="Util\Verify.cs" />

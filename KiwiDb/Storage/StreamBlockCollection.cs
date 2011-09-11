@@ -165,13 +165,19 @@ namespace KiwiDb.Storage
             _blocks.Remove(blockId);
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
-            if (AutoCommit)
+            try
             {
-                SaveChanges();
+                if (AutoCommit)
+                {
+                    SaveChanges();
+                }
             }
-            _stream.Dispose();
+            finally
+            {
+                _stream.Dispose();
+            }
         }
 
         #endregion

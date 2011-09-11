@@ -1,14 +1,25 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
+using KiwiDb.Util;
 
 namespace KiwiDb.Storage
 {
     public class FileStreamBlockCollection : StreamBlockCollection
     {
+        private readonly IDisposable _lock;
+        private static FairFileAccessScheduler Scheduler = new FairFileAccessScheduler();
         private const int DefaultBlockSize = 4*1024;
 
-        protected FileStreamBlockCollection(Stream stream) : base(stream)
+        protected FileStreamBlockCollection(Stream stream, IDisposable @lock) : base(stream)
         {
+            _lock = @lock;
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            _lock.Dispose();
         }
 
         public static FileStreamBlockCollection CreateRead(string path)
@@ -22,8 +33,7 @@ namespace KiwiDb.Storage
 
         public static FileStreamBlockCollection CreateRead(IDatabaseFileProvider databaseFileProvider)
         {
-            var stream = CreateStream(databaseFileProvider, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            return new FileStreamBlockCollection(stream);
+            return CreateCollection(databaseFileProvider, false, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
         }
 
         public static FileStreamBlockCollection CreateWrite(string path)
@@ -37,18 +47,23 @@ namespace KiwiDb.Storage
 
         public static FileStreamBlockCollection CreateWrite(IDatabaseFileProvider databaseFileProvider)
         {
-            var stream = CreateStream(databaseFileProvider, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
-            return new FileStreamBlockCollection(stream);
+            return CreateCollection(databaseFileProvider, true, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
         }
 
-        private static FileStream CreateStream(IDatabaseFileProvider databaseFileProvider, FileMode mode, FileAccess access, FileShare share)
+        private static FileStreamBlockCollection CreateCollection(IDatabaseFileProvider databaseFileProvider, bool writable, FileMode mode, FileAccess access, FileShare share)
         {
             var endTime = DateTime.Now + databaseFileProvider.Timeout;
+
+            var @lock = writable ? 
+                Scheduler.EnterWrite(databaseFileProvider.Path, databaseFileProvider.Timeout)
+                : Scheduler.EnterRead(databaseFileProvider.Path, databaseFileProvider.Timeout);
+
             while (true)
             {
                 try
                 {
-                    return new FileStream(databaseFileProvider.Path, mode, access, share);
+                    var stream = new FileStream(databaseFileProvider.Path, mode, access, share);
+                    return new FileStreamBlockCollection(stream, @lock);
                 }
                 catch (FileNotFoundException)
                 {
@@ -64,9 +79,21 @@ namespace KiwiDb.Storage
                             continue;
                         }
                     }
+                    @lock.Dispose();
+                    throw;
+                }
+                catch(Exception)
+                {
+                    @lock.Dispose();
                     throw;
                 }
             }
+        }
+
+        private static ReaderWriterLock GetLock(IDatabaseFileProvider databaseFileProvider)
+        {
+            
+            throw new NotImplementedException();
         }
 
         private static void EnsureFile(string path)
