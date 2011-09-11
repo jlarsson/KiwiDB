@@ -17,7 +17,7 @@ namespace KiwiDb.Tests.Gist.UpdateStrategies
 
                 gist.Insert("A", "value for A");
 
-                Assert.Throws<ArgumentException>(() => gist.Insert("A", "new value for A"));
+                Assert.Throws<DuplicateKeyException>(() => gist.Insert("A", "new value for A"));
             }
         }
 
@@ -37,7 +37,7 @@ namespace KiwiDb.Tests.Gist.UpdateStrategies
             {
                 var gist = CreateGist(blocks, updateStrategy);
 
-                Assert.Throws<ArgumentException>(() => gist.Insert("A", "new value for A"));
+                Assert.Throws<DuplicateKeyException>(() => gist.Insert("A", "new value for A"));
             }
         }
     }
