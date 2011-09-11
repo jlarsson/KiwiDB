@@ -69,6 +69,19 @@ namespace KiwiDb.JsonDb.Index
             }
         }
 
+        public bool DropIndex(string memberPath)
+        {
+            IndexWrapper index;
+            if (IndexCache.TryGetValue(memberPath, out index))
+            {
+                IndexCache.Remove(memberPath);
+                Remove(memberPath, _ => true);
+                index.Drop();
+                return true;
+            }
+            return false;
+        }
+
         public void UpdateIndex(string key, IJsonValue oldValue, IJsonValue newValue)
         {
             // TODO: Special IndexValue comparison is not in effect...
@@ -227,6 +240,11 @@ namespace KiwiDb.JsonDb.Index
             }
 
             #endregion
+
+            public void Drop()
+            {
+                Index.Drop();
+            }
         }
 
         #endregion

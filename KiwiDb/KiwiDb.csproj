@@ -58,6 +58,7 @@
     <Compile Include="Gist\Tree\IUpdateStrategy.cs" />
     <Compile Include="JsonDb\CollectionBase.cs" />
     <Compile Include="JsonDb\CollectionExtensions.cs" />
+    <Compile Include="JsonDb\CollectionIndicesExtensions.cs" />
     <Compile Include="JsonDb\DateIndexOptions.cs" />
     <Compile Include="JsonDb\Filter\ArrayMatcher.cs" />
     <Compile Include="JsonDb\Filter\BoolMatcher.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="JsonDb\Filter\StringMatcher.cs" />
     <Compile Include="JsonDb\GistJsonType.cs" />
     <Compile Include="JsonDb\ICollection.cs" />
+    <Compile Include="JsonDb\ICollectionIndices.cs" />
     <Compile Include="JsonDb\Index\GistIndexValueType.cs" />
     <Compile Include="JsonDb\Index\IgnoreTimeOfDayComparer.cs" />
     <Compile Include="JsonDb\Index\IIndex.cs" />

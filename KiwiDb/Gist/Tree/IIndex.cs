@@ -9,5 +9,6 @@ namespace KiwiDb.Gist.Tree
         void Insert(TKey key, TValue value);
         void Remove(TKey key, Func<KeyValuePair<TKey, TValue>, bool> filter);
         IEnumerable<KeyValuePair<TKey, TValue>> Find(TKey key);
+        void Drop();
     }
 }

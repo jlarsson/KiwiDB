@@ -11,5 +11,7 @@ namespace KiwiDb.Gist.Tree
 
         bool Remove(TKey key, Func<KeyValuePair<TKey, TValue>, bool> filter,
                     Action<IList<KeyValuePair<TKey, int>>> replaced);
+
+        void Drop();
     }
 }

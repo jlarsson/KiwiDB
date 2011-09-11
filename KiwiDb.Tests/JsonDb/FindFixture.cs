@@ -35,7 +35,7 @@ namespace KiwiDb.Tests.JsonDb
                 coll.Update(o.Key, o);
             }
 
-            coll.EnsureIndex("Tags");
+            coll.Indices.EnsureIndex("Tags");
             var objectsWithTag1 = coll.Find(new {Tags = 1}).Select(kv => kv.Key).OrderBy(s => s).ToArray();
 
             CollectionAssert.AreEqual(new[] {"0", "10", "20"}, objectsWithTag1);

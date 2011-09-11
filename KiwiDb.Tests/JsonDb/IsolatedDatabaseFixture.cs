@@ -24,7 +24,7 @@ namespace KiwiDb.Tests.JsonDb
         {
         }
 
-        protected Collection GetCollection()
+        protected ICollection GetCollection()
         {
             return new Collection(_databasePath);
         }

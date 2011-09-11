@@ -7,9 +7,14 @@ using KiwiDb.JsonDb.Index;
 
 namespace KiwiDb.JsonDb
 {
-    public abstract class CollectionBase : ICollection
+    public abstract class CollectionBase : ICollection, ICollectionIndices
     {
         #region ICollection Members
+
+        public ICollectionIndices Indices
+        {
+            get { return this; }
+        }
 
         public abstract T ExecuteRead<T>(Func<ICollection, T> action);
         public abstract T ExecuteWrite<T>(Func<ICollection, T> action);
@@ -62,6 +67,14 @@ namespace KiwiDb.JsonDb
                                                                                  Options = options
                                                                              });
                                         return true;
+                                    });
+        }
+
+        public bool DropIndex(string memberPath)
+        {
+            return ExecuteWriteSession(session =>
+                                    {
+                                        return session.IndexCatalog.DropIndex(memberPath);
                                     });
         }
 

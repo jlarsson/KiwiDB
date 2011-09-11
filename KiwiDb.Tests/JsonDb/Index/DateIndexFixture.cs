@@ -19,7 +19,7 @@ namespace KiwiDb.Tests.JsonDb.Index
             var coll = GetCollection();
 
             // Create index over Date, considering all parts of DateTime values
-            coll.EnsureIndex("Date");
+            coll.Indices.EnsureIndex("Date");
 
             var date1 = DateTime.Now;
             var date2 = date1.AddSeconds(1);
@@ -45,7 +45,7 @@ namespace KiwiDb.Tests.JsonDb.Index
             var coll = GetCollection();
 
             // Create index over Date, considering only the Date part and ignoring the time part
-            coll.EnsureIndex("Date", new IndexOptions().SetIgnoreTimeOfDay(true));
+            coll.Indices.EnsureIndex("Date", new IndexOptions().SetIgnoreTimeOfDay(true));
 
             var date1 = new DateTime(2011, 09, 12);
             var date2 = date1.AddHours(2).AddMinutes(30);
@@ -71,7 +71,7 @@ namespace KiwiDb.Tests.JsonDb.Index
             var coll = GetCollection();
 
             // Create unique index over Name
-            coll.EnsureIndex("Date", new IndexOptions()
+            coll.Indices.EnsureIndex("Date", new IndexOptions()
                                          .SetUnique(true)
                 );
 
@@ -93,7 +93,7 @@ namespace KiwiDb.Tests.JsonDb.Index
             var coll = GetCollection();
 
             // Create unique, time-of-day ignoring index over Name
-            coll.EnsureIndex("Date", new IndexOptions()
+            coll.Indices.EnsureIndex("Date", new IndexOptions()
                                          .SetUnique(true)
                                          .SetIgnoreTimeOfDay(true)
                 );

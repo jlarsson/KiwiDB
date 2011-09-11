@@ -8,5 +8,6 @@ namespace KiwiDb.JsonDb.Index
         IEnumerable<string> FindKeys(IndexValue indexValue);
         void AddIndex(string key, IndexValue indexValue);
         void RemoveIndex(string key, IndexValue indexValue);
+        void Drop();
     }
 }

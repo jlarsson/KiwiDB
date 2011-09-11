@@ -29,6 +29,8 @@ namespace KiwiDb.Gist.Tree
         public abstract bool Remove(TKey key, Func<KeyValuePair<TKey, TValue>, bool> filter,
                                     Action<IList<KeyValuePair<TKey, int>>> replaced);
 
+        public abstract void Drop();
+
         #endregion
 
         public static INode<TKey, TValue> GetNode(IGistConfig<TKey, TValue> config, int blockId)

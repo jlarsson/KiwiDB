@@ -64,6 +64,17 @@ namespace KiwiDb.Gist.Tree
             return false;
         }
 
+        public override void Drop()
+        {
+            var records = ReadRecords();
+            foreach (var record in records)
+            {
+                var blockId = record.Value;
+                GetNode(blockId).Drop();
+                Config.Blocks.FreeBlock(blockId);    
+            }
+        }
+
         protected override BlockHeader CreateBlockHeader()
         {
             return new BlockHeader {Flags = NodeFlags.IsInteriorNode};

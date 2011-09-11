@@ -100,6 +100,15 @@ namespace KiwiDb.Gist.Tree
             return Node<TKey, TValue>.GetNode(Config, BlockReference.BlockId).Find(key);
         }
 
+        public void Drop()
+        {
+            if (BlockReference.BlockId != 0)
+            {
+                Node<TKey, TValue>.GetNode(Config, BlockReference.BlockId).Drop();
+                Config.Blocks.FreeBlock(BlockReference.BlockId);
+            }
+        }
+
         #endregion
     }
 }

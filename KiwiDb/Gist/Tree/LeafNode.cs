@@ -46,6 +46,10 @@ namespace KiwiDb.Gist.Tree
             return false;
         }
 
+        public override void Drop()
+        {
+        }
+
         protected override BlockHeader CreateBlockHeader()
         {
             return new BlockHeader {Flags = NodeFlags.IsLeafNode};
