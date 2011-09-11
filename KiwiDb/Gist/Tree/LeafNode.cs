@@ -10,10 +10,10 @@ namespace KiwiDb.Gist.Tree
     public class LeafNode<TKey, TValue> : Node<TKey, TValue>
     {
         public LeafNode(IGistConfig<TKey, TValue> config, IGistLeafRecords<TKey, TValue> records)
-            : this(config, null, records)
+            : base(config, null)
         {
-            Block = config.Blocks.AllocateBlock(GetBytes());
             Records = records;
+            Block = config.Blocks.AllocateBlock(GetBytes());
         }
 
         public LeafNode(IGistConfig<TKey, TValue> config, IBlock block, IGistLeafRecords<TKey, TValue> records)
@@ -79,13 +79,10 @@ namespace KiwiDb.Gist.Tree
 
         public static int CreateRoot(IGistConfig<TKey, TValue> config, KeyValuePair<TKey, TValue> record)
         {
-            return config.Blocks.AllocateBlock(new LeafNode<TKey, TValue>(
-                                                   config,
-                                                   null,
-                                                   config.Ext.CreateLeafRecords(new[] {record}))
-                                                   .GetBytes()
-                )
-                .BlockId;
+            return new LeafNode<TKey, TValue>(
+                config,
+                config.Ext.CreateLeafRecords(new[] {record}))
+                .Block.BlockId;
         }
     }
 }

@@ -39,6 +39,12 @@ namespace KiwiDb.Gist.Tree
         {
             var block = config.Blocks.GetBlock(blockId);
 
+            if (block.UserData != null)
+            {
+                return (INode<TKey, TValue>) block.UserData;
+            }
+
+            INode<TKey, TValue> node = null;
             using (var stream = new MemoryStream(block.Data, false))
             {
                 using (var reader = new BinaryReader(stream))
@@ -46,15 +52,15 @@ namespace KiwiDb.Gist.Tree
                     var header = ReadBlockHeader(reader);
                     if ((header.Flags & NodeFlags.IsLeafNode) == NodeFlags.IsLeafNode)
                     {
-                        return new LeafNode<TKey, TValue>(
+                        node = new LeafNode<TKey, TValue>(
                             config,
                             block,
                             config.Ext.CreateLeafRecords(reader)
                             );
                     }
-                    if ((header.Flags & NodeFlags.IsInteriorNode) == NodeFlags.IsInteriorNode)
+                    else if ((header.Flags & NodeFlags.IsInteriorNode) == NodeFlags.IsInteriorNode)
                     {
-                        return new InteriorNode<TKey, TValue>(
+                        node = new InteriorNode<TKey, TValue>(
                             config,
                             block,
                             config.Ext.CreateIndexRecords(reader)
@@ -62,7 +68,12 @@ namespace KiwiDb.Gist.Tree
                     }
                 }
             }
-            throw new ApplicationException("Bad block header");
+            if (node == null)
+            {
+                throw new ApplicationException("Bad block header");
+            }
+            block.UserData = node;
+            return node;
         }
 
         protected INode<TKey, TValue> CreateNode<TV>(IGistRecords<TKey, TV> recs)

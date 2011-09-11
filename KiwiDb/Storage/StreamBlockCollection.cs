@@ -6,7 +6,7 @@ using KiwiDb.Util;
 
 namespace KiwiDb.Storage
 {
-    public class StreamBlockCollection : IBlockCollection, IBlockReference
+    public class StreamBlockCollection : IBlockCollection, IBlockReference, IBlockUserDataCollection
     {
         public const int MasterBlockSize = 2*Magic.SignatureLength + 4*Size.Int;
         public static readonly string MagicSignature = "Kiwi DB database - licensed under MIT";
@@ -117,7 +117,7 @@ namespace KiwiDb.Storage
         public IBlock GetBlock(int blockId)
         {
             VerifyValidDataBlock(blockId);
-            return new Block {BlockCollection = this, BlockId = blockId, Data = GetBlockData(blockId)};
+            return new Block {BlockCollection = this, BlockId = blockId, Data = GetBlockData(blockId), BlockUserDataCollection = this};
         }
 
         public IBlock AllocateBlock(byte[] data)
@@ -136,7 +136,8 @@ namespace KiwiDb.Storage
                        {
                            BlockCollection = this,
                            BlockId = chainedBlock.FirstBlockId,
-                           Data = data
+                           Data = data,
+                           BlockUserDataCollection = this
                        };
         }
 
@@ -430,5 +431,16 @@ namespace KiwiDb.Storage
         }
 
         #endregion
+
+        object IBlockUserDataCollection.GetValue(int blockId)
+        {
+            ChainedBlock chainedBlock;
+            return _blocks.TryGetValue(blockId, out chainedBlock) ? chainedBlock.UserData : null;
+        }
+
+        void IBlockUserDataCollection.SetValue(int blockId, object value)
+        {
+            _blocks[blockId].UserData = value;
+        }
     }
 }

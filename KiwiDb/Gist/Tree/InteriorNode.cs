@@ -10,10 +10,11 @@ namespace KiwiDb.Gist.Tree
     public class InteriorNode<TKey, TValue> : Node<TKey, TValue>
     {
         public InteriorNode(IGistConfig<TKey, TValue> config, IGistIndexRecords<TKey> records)
-            : this(config, null, records)
+            : base(config, null)
         {
-            Block = config.Blocks.AllocateBlock(GetBytes());
             Records = records;
+            Block = config.Blocks.AllocateBlock(GetBytes());
+            Block.UserData = this;
         }
 
         public InteriorNode(IGistConfig<TKey, TValue> config, IBlock block, IGistIndexRecords<TKey> records)
@@ -107,14 +108,11 @@ namespace KiwiDb.Gist.Tree
 
         public static int CreateRoot(IGistConfig<TKey, TValue> config, IList<KeyValuePair<TKey, int>> records)
         {
-            return
-                config.Blocks.AllocateBlock(
-                    new InteriorNode<TKey, TValue>(
+            return new InteriorNode<TKey, TValue>(
                         config,
-                        null,
                         config.Ext.CreateIndexRecords(records)
-                        ).SaveRecords(config.Ext.CreateIndexRecords(records))).
-                    BlockId;
+                        )
+                        .Block.BlockId;
         }
     }
 }
