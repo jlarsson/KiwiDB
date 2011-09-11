@@ -21,13 +21,19 @@ namespace KiwiDb.JsonDb.Index
                         Blocks = blocks,
                         Ext =
                             new OrderedGistExtension<IndexValue, IndexValue>(
-                            new GistIndexValueType()
+                            new GistIndexValueType
                                 {
-                                    StringComparer = Options.StringIndexOptions.IgnoreCase ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase
+                                    StringComparer =
+                                        Options.StringIndexOptions.IgnoreCase
+                                            ? StringComparer.Ordinal
+                                            : StringComparer.OrdinalIgnoreCase
                                 }
                             , new GistIndexValueType()),
                         //UpdateStrategy = UpdateStrategy<IndexValue, IndexValue>.AppendKey
-                        UpdateStrategy = Options.IsUnique ? UpdateStrategy<IndexValue, IndexValue>.UniqueKey : UpdateStrategy<IndexValue, IndexValue>.AppendKey
+                        UpdateStrategy =
+                            Options.IsUnique
+                                ? UpdateStrategy<IndexValue, IndexValue>.UniqueKey
+                                : UpdateStrategy<IndexValue, IndexValue>.AppendKey
                     });
         }
 
@@ -39,16 +45,15 @@ namespace KiwiDb.JsonDb.Index
                         Blocks = blocks,
                         Ext =
                             new OrderedGistExtension<IndexValue, string>(
-                            new GistIndexValueType()
+                            new GistIndexValueType
                                 {
                                     StringComparer =
                                         Options.StringIndexOptions.IgnoreCase
                                             ? StringComparer.OrdinalIgnoreCase
                                             : StringComparer.Ordinal,
-
-                                    DateTimeComparer = 
-                                        Options.DateIndexOptions.IgnoreTimeOfDay ?
-                                            (IComparer<DateTime>)new IgnoreTimeOfDayComparer() 
+                                    DateTimeComparer =
+                                        Options.DateIndexOptions.IgnoreTimeOfDay
+                                            ? (IComparer<DateTime>) new IgnoreTimeOfDayComparer()
                                             : Comparer<DateTime>.Default
                                 }
                             , new GistStringType()),

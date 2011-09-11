@@ -57,6 +57,10 @@ namespace KiwiDb.JsonDb
                                            });
         }
 
+        #endregion
+
+        #region ICollectionIndices Members
+
         public virtual void EnsureIndex(string memberPath, IndexOptions options)
         {
             ExecuteWriteSession(session =>
@@ -72,10 +76,7 @@ namespace KiwiDb.JsonDb
 
         public bool DropIndex(string memberPath)
         {
-            return ExecuteWriteSession(session =>
-                                    {
-                                        return session.IndexCatalog.DropIndex(memberPath);
-                                    });
+            return ExecuteWriteSession(session => { return session.IndexCatalog.DropIndex(memberPath); });
         }
 
         #endregion

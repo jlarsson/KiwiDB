@@ -3,24 +3,26 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using KiwiDb.Gist.Extensions;
+using KiwiDb.Storage;
 
 namespace KiwiDb.Gist.Tree
 {
     public abstract class Node<TKey, TValue> : INode<TKey, TValue>
     {
-        protected Node(IGistConfig<TKey, TValue> config, byte[] data)
+        protected Node(IGistConfig<TKey, TValue> config, IBlock block)
         {
             Config = config;
-            Data = data;
+            Block = block;
         }
 
         public IGistConfig<TKey, TValue> Config { get; private set; }
-
-        public byte[] Data { get; private set; }
+        public IBlock Block { get; set; }
 
         #region INode<TKey,TValue> Members
 
         public abstract IEnumerable<KeyValuePair<TKey, TValue>> Find(TKey key);
+
+        public abstract TKey MaxKey { get; }
 
         public abstract IEnumerable<KeyValuePair<TKey, TValue>> Scan();
 
@@ -37,18 +39,43 @@ namespace KiwiDb.Gist.Tree
         {
             var block = config.Blocks.GetBlock(blockId);
 
-            var header = GetBlockHeader(block.Data);
-
-            if ((header.Flags & NodeFlags.IsLeafNode) == NodeFlags.IsLeafNode)
+            using (var stream = new MemoryStream(block.Data, false))
             {
-                return new LeafNode<TKey, TValue>(config, block.Data);
+                using (var reader = new BinaryReader(stream))
+                {
+                    var header = ReadBlockHeader(reader);
+                    if ((header.Flags & NodeFlags.IsLeafNode) == NodeFlags.IsLeafNode)
+                    {
+                        return new LeafNode<TKey, TValue>(
+                            config,
+                            block,
+                            config.Ext.CreateLeafRecords(reader)
+                            );
+                    }
+                    if ((header.Flags & NodeFlags.IsInteriorNode) == NodeFlags.IsInteriorNode)
+                    {
+                        return new InteriorNode<TKey, TValue>(
+                            config,
+                            block,
+                            config.Ext.CreateIndexRecords(reader)
+                            );
+                    }
+                }
             }
-            if ((header.Flags & NodeFlags.IsInteriorNode) == NodeFlags.IsInteriorNode)
-            {
-                return new InteriorNode<TKey, TValue>(config, block.Data);
-            }
-
             throw new ApplicationException("Bad block header");
+        }
+
+        protected INode<TKey, TValue> CreateNode<TV>(IGistRecords<TKey, TV> recs)
+        {
+            if (recs is IGistIndexRecords<TKey>)
+            {
+                return new InteriorNode<TKey, TValue>(Config, (IGistIndexRecords<TKey>)recs);
+            }
+            if (recs is IGistLeafRecords<TKey, TValue>)
+            {
+                return new LeafNode<TKey, TValue>(Config, (IGistLeafRecords<TKey, TValue>)recs);
+            }
+            throw new ApplicationException("Bad records");
         }
 
         protected INode<TKey, TValue> GetNode(int blockId)
@@ -56,15 +83,7 @@ namespace KiwiDb.Gist.Tree
             return GetNode(Config, blockId);
         }
 
-        protected static BlockHeader GetBlockHeader(byte[] bytes)
-        {
-            return new BlockHeader
-                       {
-                           Flags = (NodeFlags) BitConverter.ToInt32(bytes, 0)
-                       };
-        }
-
-        protected BlockHeader ReadBlockHeader(BinaryReader reader)
+        protected static BlockHeader ReadBlockHeader(BinaryReader reader)
         {
             return new BlockHeader
                        {
@@ -92,30 +111,28 @@ namespace KiwiDb.Gist.Tree
 
         protected abstract BlockHeader CreateBlockHeader();
 
-        protected bool HandleUpdate<V>(IGistRecords<TKey, V> records, Action<IList<KeyValuePair<TKey, int>>> replaced)
+        protected bool HandleUpdate(Action<IList<KeyValuePair<TKey, int>>> replaced)
         {
-            var newData = SaveRecords(records);
+            var newData = GetBytes();
             if (!IsLargeData(newData))
             {
                 replaced(
                     new[]
                         {
                             new KeyValuePair<TKey, int>(
-                                records.GetMaxKey(),
+                                MaxKey,
                                 AllocateBlock(newData)
                                 )
                         });
             }
             else
             {
-                replaced((from recs in records.Split()
-                          let data = SaveRecords(recs)
-                          select
-                              new KeyValuePair<TKey, int>(recs.GetMaxKey(),
-                                                          AllocateBlock(data))).ToArray());
+                replaced(Split().Select(n => new KeyValuePair<TKey, int>(n.MaxKey, n.Block.BlockId)).ToArray());
             }
             return true;
         }
+
+        protected abstract IEnumerable<INode<TKey, TValue>> Split();
 
         private int AllocateBlock(byte[] data)
         {
@@ -146,5 +163,20 @@ namespace KiwiDb.Gist.Tree
         {
             Config.UpdateStrategy.PrepareUpdate(key, value, actions);
         }
+
+        protected byte[] GetBytes()
+        {
+            using (var stream = new MemoryStream())
+            {
+                using (var writer = new BinaryWriter(stream))
+                {
+                    WriteBlockHeader(writer, CreateBlockHeader());
+                    WriteRecords(writer);
+                    return stream.ToArray();
+                }
+            }
+        }
+
+        protected abstract void WriteRecords(BinaryWriter writer);
     }
 }

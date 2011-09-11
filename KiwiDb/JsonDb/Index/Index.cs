@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using KiwiDb.Gist.Extensions;
 using KiwiDb.Gist.Tree;
 using KiwiDb.Storage;
 

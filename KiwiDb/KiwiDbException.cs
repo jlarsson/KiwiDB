@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace KiwiDb
 {
-    public class KiwiDbException: ApplicationException
+    public class KiwiDbException : ApplicationException
     {
         public KiwiDbException()
         {

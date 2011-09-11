@@ -40,6 +40,7 @@
     <Compile Include="DuplicateKeyException.cs" />
     <Compile Include="Gist\Tree\AppendKey.cs" />
     <Compile Include="Gist\Tree\UniqueKey.cs" />
+    <Compile Include="Gist\Tree\UpdateActions.cs" />
     <Compile Include="Gist\Tree\UpdateKey.cs" />
     <Compile Include="Gist\Tree\UpdateStrategy.cs" />
     <Compile Include="JsonDb\Collection.cs" />

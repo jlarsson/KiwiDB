@@ -3,51 +3,68 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using KiwiDb.Gist.Extensions;
-using KiwiDb.Util;
+using KiwiDb.Storage;
 
 namespace KiwiDb.Gist.Tree
 {
     public class LeafNode<TKey, TValue> : Node<TKey, TValue>
     {
-        public LeafNode(IGistConfig<TKey, TValue> config, byte[] data)
-            : base(config, data)
+        public LeafNode(IGistConfig<TKey, TValue> config, IGistLeafRecords<TKey, TValue> records)
+            : this(config, null, records)
         {
+            Block = config.Blocks.AllocateBlock(GetBytes());
+            Records = records;
+        }
+
+        public LeafNode(IGistConfig<TKey, TValue> config, IBlock block, IGistLeafRecords<TKey, TValue> records)
+            : base(config, block)
+        {
+            Records = records;
+        }
+
+        public IGistLeafRecords<TKey, TValue> Records { get; private set; }
+
+        public override TKey MaxKey
+        {
+            get { return Records.GetMaxKey(); }
+        }
+
+        protected override IEnumerable<INode<TKey, TValue>> Split()
+        {
+            return Records.Split().Select(CreateNode);
         }
 
         public override IEnumerable<KeyValuePair<TKey, TValue>> Scan()
         {
-            return ReadRecords();
+            return Records;
         }
 
         public override IEnumerable<KeyValuePair<TKey, TValue>> Find(TKey key)
         {
-            return ReadRecords().Find(key);
+            return Records.Find(key);
         }
 
         public override bool Insert(TKey key, TValue value, Action<IList<KeyValuePair<TKey, int>>> replaced)
         {
-            var records = ReadRecords();
+            PrepareUpdate(key, value, new UpdateActions<TKey, TValue>(Records, key));
 
-            PrepareUpdate(key, value, new UpdateActions(records, key));
-
-            records.Insert(new KeyValuePair<TKey, TValue>(key, value));
-            return HandleUpdate(records, replaced);
+            Records.Insert(new KeyValuePair<TKey, TValue>(key, value));
+            return HandleUpdate(replaced);
         }
 
         public override bool Remove(TKey key, Func<KeyValuePair<TKey, TValue>, bool> filter,
                                     Action<IList<KeyValuePair<TKey, int>>> replaced)
         {
-            var records = ReadRecords();
-
-            if (records.Remove(key, filter))
+            if (Records.Remove(key, filter))
             {
-                return HandleUpdate(records, replaced);
+                return HandleUpdate(replaced);
             }
             return false;
         }
 
         public override void Drop()
         {
+            FreeBlock(Block.BlockId);
         }
 
         protected override BlockHeader CreateBlockHeader()
@@ -55,60 +72,20 @@ namespace KiwiDb.Gist.Tree
             return new BlockHeader {Flags = NodeFlags.IsLeafNode};
         }
 
-        private IGistLeafRecords<TKey, TValue> ReadRecords()
+        protected override void WriteRecords(BinaryWriter writer)
         {
-            using (var stream = new MemoryStream(Data, false))
-            {
-                using (var reader = new BinaryReader(stream))
-                {
-                    ReadBlockHeader(reader);
-                    return CreateLeafRecords(reader);
-                }
-            }
+            Records.Write(writer);
         }
 
         public static int CreateRoot(IGistConfig<TKey, TValue> config, KeyValuePair<TKey, TValue> record)
         {
-            return config.Blocks.AllocateBlock(new LeafNode<TKey, TValue>(config, null).SaveRecords(
-                config.Ext.CreateLeafRecords(new[] {record}))).BlockId;
+            return config.Blocks.AllocateBlock(new LeafNode<TKey, TValue>(
+                                                   config,
+                                                   null,
+                                                   config.Ext.CreateLeafRecords(new[] {record}))
+                                                   .GetBytes()
+                )
+                .BlockId;
         }
-
-        #region Nested type: UpdateActions
-
-        public class UpdateActions : IUpdateActions
-        {
-            private readonly TKey _key;
-            private readonly IGistLeafRecords<TKey, TValue> _records;
-
-            public UpdateActions(IGistLeafRecords<TKey, TValue> records, TKey key)
-            {
-                _records = records;
-                _key = key;
-            }
-
-            #region IUpdateActions Members
-
-            public void FailIfKeyExists()
-            {
-                if (_records.Find(_key).Take(1).Count() > 0)
-                {
-                    throw Verify.DuplicateKey(_key);
-                }
-            }
-
-            public void UpdateExistingKey()
-            {
-                _records.Remove(_key, kv => true);
-            }
-
-            public void AppendNewKey()
-            {
-                // Do nothing
-            }
-
-            #endregion
-        }
-
-        #endregion
     }
 }

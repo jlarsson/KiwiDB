@@ -239,12 +239,12 @@ namespace KiwiDb.JsonDb.Index
                 Index.RemoveIndex(key, indexValue);
             }
 
-            #endregion
-
             public void Drop()
             {
                 Index.Drop();
             }
+
+            #endregion
         }
 
         #endregion
