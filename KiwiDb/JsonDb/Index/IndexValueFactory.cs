@@ -59,7 +59,7 @@ namespace KiwiDb.JsonDb.Index
 
             public IEnumerable<IndexValue> VisitNull(IJsonNull value)
             {
-                yield break;
+                yield return new IndexValue();
             }
 
             public IEnumerable<IndexValue> VisitObject(IJsonObject value)

@@ -48,9 +48,15 @@ namespace KiwiDb.JsonDb.Index
 
         #region IIndexCatalog Members
 
-        public IEnumerable<IIndex> EnumerateIndices
+        public IEnumerable<KeyValuePair<string, IIndex>> EnumerateIndices
         {
-            get { return IndexCache.Values; }
+            get { return IndexCache.Select(kv => new KeyValuePair<string, IIndex>(kv.Key, kv.Value)); }
+        }
+
+        public IIndex GetIndex(string memberPath)
+        {
+            IndexWrapper indexWrapper;
+            return IndexCache.TryGetValue(memberPath, out indexWrapper) ? indexWrapper : null;
         }
 
         public void EnsureIndex(IndexDefinition indexDefinition)
@@ -222,6 +228,11 @@ namespace KiwiDb.JsonDb.Index
             public string MemberPath
             {
                 get { return IndexDefinition.Path; }
+            }
+
+            public void Visit(Action<KeyValuePair<IndexValue, string>> visitor)
+            {
+                Index.Visit(visitor);
             }
 
             public IEnumerable<string> FindKeys(IndexValue indexValue)

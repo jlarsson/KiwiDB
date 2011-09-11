@@ -1,22 +1,28 @@
+using System;
 using System.IO;
 using KiwiDb.JsonDb;
+using KiwiDb.Storage;
 using NUnit.Framework;
 
 namespace KiwiDb.Tests.JsonDb
 {
     public class IsolatedDatabaseFixture
     {
-        private readonly string _databasePath;
+        public DatabaseFileProvider DatabaseFileProvider { get; private set; }
 
         public IsolatedDatabaseFixture()
         {
-            _databasePath = Path.GetFullPath(@".\" + GetType().Name + ".kiwidb");
+            DatabaseFileProvider = new DatabaseFileProvider()
+                                       {
+                                           Path = Path.GetFullPath(@".\" + GetType().Name + ".kiwidb"),
+                                           Timeout = TimeSpan.FromSeconds(2)
+                                       };
         }
 
         [SetUp]
         public void SetUp()
         {
-            File.Delete(_databasePath);
+            File.Delete(DatabaseFileProvider.Path);
         }
 
         [TearDown]
@@ -26,7 +32,7 @@ namespace KiwiDb.Tests.JsonDb
 
         protected ICollection GetCollection()
         {
-            return new Collection(_databasePath);
+            return new Collection(DatabaseFileProvider);
         }
     }
 }

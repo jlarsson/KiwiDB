@@ -6,15 +6,21 @@ namespace KiwiDb.JsonDb
 {
     public class Collection : CollectionBase
     {
-        public Collection(string dabaseFilePath)
+        public IDatabaseFileProvider FileProvider { get; private set; }
+
+        public Collection(IDatabaseFileProvider fileProvider)
         {
-            DabaseFilePath = dabaseFilePath;
+            FileProvider = fileProvider;
             IndexValueFactory = new IndexValueFactory();
+        }
+
+        public Collection(string databaseFilePath)
+            : this(new DatabaseFileProvider() { Path = databaseFilePath, Timeout = TimeSpan.FromSeconds(30)})
+        {
         }
 
         public IndexValueFactory IndexValueFactory { get; private set; }
 
-        public string DabaseFilePath { get; private set; }
 
         public override T ExecuteReadSession<T>(Func<ISession, T> action)
         {
@@ -65,8 +71,8 @@ namespace KiwiDb.JsonDb
         private ISession CreateSession(bool writable)
         {
             var blocks = writable
-                             ? FileStreamBlockCollection.CreateWrite(DabaseFilePath)
-                             : FileStreamBlockCollection.CreateRead(DabaseFilePath);
+                             ? FileStreamBlockCollection.CreateWrite(FileProvider)
+                             : FileStreamBlockCollection.CreateRead(FileProvider);
             try
             {
                 return new Session(blocks, IndexValueFactory);

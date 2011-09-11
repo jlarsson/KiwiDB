@@ -13,20 +13,60 @@ namespace KiwiDb.Storage
 
         public static FileStreamBlockCollection CreateRead(string path)
         {
-            var stream = OpenSharedStream(TimeSpan.FromSeconds(30),
-                                          () =>
-                                          new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite),
-                                          () => EnsureFile(path));
+            return CreateRead(new DatabaseFileProvider()
+                                  {
+                                      Path = path,
+                                      Timeout = TimeSpan.FromSeconds(30)
+                                  });
+        }
+
+        public static FileStreamBlockCollection CreateRead(IDatabaseFileProvider databaseFileProvider)
+        {
+            var stream = CreateStream(databaseFileProvider, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             return new FileStreamBlockCollection(stream);
         }
 
         public static FileStreamBlockCollection CreateWrite(string path)
         {
-            var stream = OpenSharedStream(TimeSpan.FromSeconds(30),
-                                          () =>
-                                          new FileStream(path, FileMode.Open, FileAccess.ReadWrite, FileShare.None),
-                                          () => EnsureFile(path));
+            return CreateWrite(new DatabaseFileProvider()
+            {
+                Path = path,
+                Timeout = TimeSpan.FromSeconds(30)
+            });
+        }
+
+        public static FileStreamBlockCollection CreateWrite(IDatabaseFileProvider databaseFileProvider)
+        {
+            var stream = CreateStream(databaseFileProvider, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
             return new FileStreamBlockCollection(stream);
+        }
+
+        private static FileStream CreateStream(IDatabaseFileProvider databaseFileProvider, FileMode mode, FileAccess access, FileShare share)
+        {
+            var endTime = DateTime.Now + databaseFileProvider.Timeout;
+            while (true)
+            {
+                try
+                {
+                    return new FileStream(databaseFileProvider.Path, mode, access, share);
+                }
+                catch (FileNotFoundException)
+                {
+                    EnsureFile(databaseFileProvider.Path);
+                }
+                catch (IOException e)
+                {
+                    if (IoError.IsSharingViolation(e))
+                    {
+                        if (endTime > DateTime.Now)
+                        {
+                            databaseFileProvider.HandleSharingViolation();
+                            continue;
+                        }
+                    }
+                    throw;
+                }
+            }
         }
 
         private static void EnsureFile(string path)
@@ -42,33 +82,6 @@ namespace KiwiDb.Storage
             {
                 if (!File.Exists(path))
                 {
-                    throw;
-                }
-            }
-        }
-
-        private static Stream OpenSharedStream(TimeSpan timeout, Func<Stream> opener, Action createIfMissing)
-        {
-            var endTime = DateTime.Now + timeout;
-            while (true)
-            {
-                try
-                {
-                    return opener();
-                }
-                catch (FileNotFoundException)
-                {
-                    createIfMissing();
-                }
-                catch (IOException e)
-                {
-                    if (IoError.IsSharingViolation(e))
-                    {
-                        if (endTime > DateTime.Now)
-                        {
-                            continue;
-                        }
-                    }
                     throw;
                 }
             }

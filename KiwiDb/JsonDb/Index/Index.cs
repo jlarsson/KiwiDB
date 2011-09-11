@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using KiwiDb.Gist.Tree;
@@ -24,6 +25,14 @@ namespace KiwiDb.JsonDb.Index
 
         public string MemberPath { get; set; }
 
+
+        public void Visit(Action<KeyValuePair<IndexValue, string>> visitor)
+        {
+            foreach (var kv in Scan())
+            {
+                visitor(kv);
+            }
+        }
 
         public IEnumerable<string> FindKeys(IndexValue indexValue)
         {

@@ -99,11 +99,13 @@
     <Compile Include="Storage\Block.cs" />
     <Compile Include="Storage\BlockIdSet.cs" />
     <Compile Include="Storage\ChainedBlock.cs" />
+    <Compile Include="Storage\DatabaseFileProvider.cs" />
     <Compile Include="Storage\FileStreamBlockCollection.cs" />
     <Compile Include="Storage\IBlock.cs" />
     <Compile Include="Storage\IBlockCollection.cs" />
     <Compile Include="Storage\IBlockCollectionStats.cs" />
     <Compile Include="Storage\IBlockReference.cs" />
+    <Compile Include="Storage\IDatabaseFileProvider.cs" />
     <Compile Include="Storage\IoError.cs" />
     <Compile Include="Storage\MasterBlockData.cs" />
     <Compile Include="Storage\MemoryBlockCollection.cs" />

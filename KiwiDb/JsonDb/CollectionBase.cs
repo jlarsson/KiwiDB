@@ -61,6 +61,20 @@ namespace KiwiDb.JsonDb
 
         #region ICollectionIndices Members
 
+        public void VisitIndex(string memberPath, Action<KeyValuePair<IndexValue, string>> visitor)
+        {
+            ExecuteReadSession(session =>
+                                   {
+                                       var index = session.IndexCatalog.GetIndex(memberPath);
+                                       if (index != null)
+                                       {
+                                           index.Visit(visitor);
+                                           return true;
+                                       }
+                                       return false;
+                                   });
+        }
+
         public virtual void EnsureIndex(string memberPath, IndexOptions options)
         {
             ExecuteWriteSession(session =>

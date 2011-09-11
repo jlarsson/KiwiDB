@@ -5,7 +5,8 @@ namespace KiwiDb.JsonDb.Index
 {
     public interface IIndexCatalog
     {
-        IEnumerable<IIndex> EnumerateIndices { get; }
+        IEnumerable<KeyValuePair<string,IIndex>> EnumerateIndices { get; }
+        IIndex GetIndex(string memberPath);
         void EnsureIndex(IndexDefinition indexDefinition);
         bool DropIndex(string memberPath);
         void UpdateIndex(string key, IJsonValue oldValue, IJsonValue newValue);

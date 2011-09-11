@@ -53,13 +53,14 @@
     <Compile Include="Gist\LargeKeysAndValuesFixture.cs" />
     <Compile Include="Gist\UpdateStrategies\AppendKeyFixture.cs" />
     <Compile Include="Gist\UpdateStrategies\UpdateExistingKeyFixture.cs" />
+    <Compile Include="JsonDb\ConcurrencyFixture.cs" />
     <Compile Include="JsonDb\Filter\JsonFilterFixture.cs" />
     <Compile Include="JsonDb\FindFixture.cs" />
+    <Compile Include="JsonDb\Index\ArrayIndexingFixture.cs" />
     <Compile Include="JsonDb\Index\DateIndexFixture.cs" />
     <Compile Include="JsonDb\Index\IndexValueFactoryFixture.cs" />
     <Compile Include="JsonDb\Index\StringIndexFixture.cs" />
     <Compile Include="JsonDb\IsolatedDatabaseFixture.cs" />
-    <Compile Include="JsonDb\ScratchPad.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Gist\UpdateStrategies\UniqueKeyFixture.cs" />
   </ItemGroup>
