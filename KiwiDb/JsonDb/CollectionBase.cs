@@ -53,6 +53,7 @@ namespace KiwiDb.JsonDb
                                                                                        deleted = kv.Value;
                                                                                        return true;
                                                                                    });
+                                               session.IndexCatalog.UpdateIndex(key, deleted, null);
                                                return deleted;
                                            });
         }

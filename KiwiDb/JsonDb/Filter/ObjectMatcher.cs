@@ -4,11 +4,16 @@ namespace KiwiDb.JsonDb.Filter
 {
     public class ObjectMatcher : Matcher
     {
-        public ObjectMatcher(IJsonObject value)
+        private readonly IJsonFilter _filter;
+
+        public ObjectMatcher(IJsonFilter filter)
         {
-            Value = value;
+            _filter = filter;
         }
 
-        public IJsonObject Value { get; set; }
+        public override bool VisitObject(IJsonObject value)
+        {
+            return _filter.Matches(value);
+        }
     }
 }

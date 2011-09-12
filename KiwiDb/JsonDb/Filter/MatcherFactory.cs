@@ -8,7 +8,7 @@ namespace KiwiDb.JsonDb.Filter
 
         public Matcher VisitArray(IJsonArray value)
         {
-            return new ArrayMatcher(value);
+            return new ArrayMatcher(value, this);
         }
 
 
@@ -44,7 +44,7 @@ namespace KiwiDb.JsonDb.Filter
 
         public Matcher VisitObject(IJsonObject value)
         {
-            return new ObjectMatcher(value);
+            return new ObjectMatcher(new JsonFilter(value));
         }
 
 

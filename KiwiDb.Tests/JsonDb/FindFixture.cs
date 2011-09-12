@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using KiwiDb.JsonDb;
 using NUnit.Framework;
 
 namespace KiwiDb.Tests.JsonDb
@@ -39,14 +38,6 @@ namespace KiwiDb.Tests.JsonDb
             var objectsWithTag1 = coll.Find(new {Tags = 1}).Select(kv => kv.Key).OrderBy(s => s).ToArray();
 
             CollectionAssert.AreEqual(new[] {"0", "10", "20"}, objectsWithTag1);
-
-
-            var a = coll.Find(new object()).ToArray();
-            //foreach (var rec in coll.Find(new object()))
-            //{
-            //    Console.Out.WriteLine(rec.Value);
-
-            //}
         }
     }
 }
