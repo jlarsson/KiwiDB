@@ -24,6 +24,10 @@ KiwiDB is now present in [the NuGet gallery](http://nuget.org/List/Packages/Kiwi
 Clone the repository.
 
 * git clone https://github.com/jlarsson/KiwiDB KiwiDB
+
+Get submodules (Kiwi.Json)
+
+* git submodule sync
 * git submodule update
 
 Update NuGet dependencies.
