@@ -13,14 +13,20 @@ KiwiDB is en embedded document database for the .NET ecosystem. Key features are
 
 KiwiDB is released under the [MIT License](http://www.opensource.org/licenses/mit-license.php).
 
-## Quick start
+## Installing from NuGet
 
-### Getting source code
+KiwiDB is now present in [the NuGet gallery](http://nuget.org/List/Packages/KiwiDb).
+
+* PM> Install-Package KiwiDb
+
+## Getting source code
+
+Clone the repository.
 
 * git clone https://github.com/jlarsson/KiwiDB KiwiDB
 * git submodule update
 
-### Updating NuGet packages
+Update NuGet dependencies.
 
 * PM> Install-Package NuGetPowerTools
 * PM> Enable-PackageRestore
