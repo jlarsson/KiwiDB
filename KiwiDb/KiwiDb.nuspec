@@ -11,4 +11,7 @@
     <description>$description$</description>
     <copyright>Copyright 2011</copyright>
   </metadata>
+  <files>
+    <file src="bin\release\kiwi.json.dll" target="lib\net40"></file>
+  </files>
 </package>
