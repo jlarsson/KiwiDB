@@ -35,5 +35,10 @@ namespace KiwiDb.JsonDb.Index
 
         public IndexValueType Type { get; private set; }
         public object Value { get; private set; }
+
+        public override string ToString()
+        {
+            return string.Format("{0}({1})", Type, Value);
+        }
     }
 }

@@ -45,7 +45,7 @@ namespace KiwiDb.Tests.JsonDb.Index
             var coll = GetCollection();
 
             // Create a case insensitive index over Text
-            coll.Indices.EnsureIndex("Text", new IndexOptions().SetIgnoreCase(true));
+            coll.Indices.EnsureIndex("Text", new IndexOptions() { WhenStringThenIgnoreCase = true });
 
             // some values, different in case only, but considered equal by the index
             const string text1 = "some text";
@@ -73,8 +73,7 @@ namespace KiwiDb.Tests.JsonDb.Index
             var coll = GetCollection();
 
             // Create unique, case insensitive index over Name
-            coll.Indices.EnsureIndex("Text", new IndexOptions()
-                                         .SetUnique(true));
+            coll.Indices.EnsureIndex("Text", new IndexOptions(){IsUnique = true});
 
             // Insert
             coll.Update("1", new Data {Text = "some text"});
@@ -92,9 +91,7 @@ namespace KiwiDb.Tests.JsonDb.Index
             var coll = GetCollection();
 
             // Create unique, case insensitive index over Name
-            coll.Indices.EnsureIndex("Text", new IndexOptions()
-                                         .SetUnique(true)
-                                         .SetIgnoreCase(true));
+            coll.Indices.EnsureIndex("Text", new IndexOptions(){IsUnique = true, WhenStringThenIgnoreCase = true});
 
             // Insert
             coll.Update("1", new Data {Text = "some text"});

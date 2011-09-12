@@ -95,6 +95,11 @@ namespace KiwiDb.Gist.Tree
             return new BlockHeader {Flags = NodeFlags.IsInteriorNode};
         }
 
+        public override bool IsEmpty
+        {
+            get { return Records.Count == 0; }
+        }
+
         protected override IEnumerable<INode<TKey, TValue>> Split()
         {
             return from recs in Records.Split()

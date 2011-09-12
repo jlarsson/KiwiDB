@@ -1,33 +1,20 @@
+using System;
+
 namespace KiwiDb.JsonDb
 {
-    public class IndexOptions
+    public class IndexOptions: IEquatable<IndexOptions>
     {
-        public IndexOptions()
-        {
-            StringIndexOptions = new StringIndexOptions();
-            DateIndexOptions = new DateIndexOptions();
-        }
-
         public bool IsUnique { get; set; }
-        public StringIndexOptions StringIndexOptions { get; set; }
-        public DateIndexOptions DateIndexOptions { get; set; }
+        public bool WhenStringThenIgnoreCase { get; set; }
+        public bool WhenDateThenIgnoreTimeOfDay { get; set; }
 
-        public IndexOptions SetIgnoreCase(bool ignoreCase)
-        {
-            StringIndexOptions.IgnoreCase = ignoreCase;
-            return this;
-        }
 
-        public IndexOptions SetUnique(bool isUnique)
+        public bool Equals(IndexOptions other)
         {
-            IsUnique = isUnique;
-            return this;
-        }
-
-        public IndexOptions SetIgnoreTimeOfDay(bool ignoreTimeOfDay)
-        {
-            DateIndexOptions.IgnoreTimeOfDay = ignoreTimeOfDay;
-            return this;
+            return !ReferenceEquals(null, other)
+                   && IsUnique.Equals(other.IsUnique)
+                   && WhenStringThenIgnoreCase.Equals(other.WhenStringThenIgnoreCase)
+                   && WhenDateThenIgnoreTimeOfDay.Equals(other.WhenDateThenIgnoreTimeOfDay);
         }
     }
 }

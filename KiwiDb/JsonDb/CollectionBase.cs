@@ -19,9 +19,27 @@ namespace KiwiDb.JsonDb
         public abstract T ExecuteRead<T>(Func<ICollection, T> action);
         public abstract T ExecuteWrite<T>(Func<ICollection, T> action);
 
+        public virtual IList<KeyValuePair<string, IJsonValue>> Find(IJsonValue filter)
+        {
+            return ExecuteReadSession(session => session.IndexCatalog.FindIndexedObjects(filter).ToList());
+        }
+
         public virtual IJsonValue Get(string key)
         {
             return ExecuteReadSession(session => session.MasterTable.Find(key).Select(kv => kv.Value).FirstOrDefault());
+        }
+
+        public virtual IJsonValue Update(string key, IJsonValue value)
+        {
+            return ExecuteWriteSession(session =>
+            {
+                var originalObject =
+                    session.MasterTable.Find(key).Select(kv => kv.Value).FirstOrDefault();
+                session.MasterTable.Insert(key, value);
+
+                session.IndexCatalog.UpdateIndex(key, originalObject, value);
+                return originalObject;
+            });
         }
 
         public IJsonValue Remove(string key)
@@ -39,27 +57,14 @@ namespace KiwiDb.JsonDb
                                            });
         }
 
-        public virtual IList<KeyValuePair<string, IJsonValue>> Find(IJsonValue filter)
-        {
-            return ExecuteReadSession(session => session.IndexCatalog.FindIndexedObjects(filter).ToList());
-        }
-
-        public virtual IJsonValue Update(string key, IJsonValue value)
-        {
-            return ExecuteWriteSession(session =>
-                                           {
-                                               var originalObject =
-                                                   session.MasterTable.Find(key).Select(kv => kv.Value).FirstOrDefault();
-                                               session.MasterTable.Insert(key, value);
-
-                                               session.IndexCatalog.UpdateIndex(key, originalObject, value);
-                                               return originalObject;
-                                           });
-        }
-
         #endregion
 
         #region ICollectionIndices Members
+
+        public IEnumerable<KeyValuePair<string, IndexOptions>> All
+        {
+            get { return ExecuteReadSession(session => session.IndexCatalog.EnumerateIndices.ToList()); }
+        }
 
         public void VisitIndex(string memberPath, Action<KeyValuePair<IndexValue, string>> visitor)
         {
@@ -75,22 +80,18 @@ namespace KiwiDb.JsonDb
                                    });
         }
 
-        public virtual void EnsureIndex(string memberPath, IndexOptions options)
+        public virtual bool EnsureIndex(string memberPath, IndexOptions options)
         {
-            ExecuteWriteSession(session =>
-                                    {
-                                        session.IndexCatalog.EnsureIndex(new IndexDefinition
-                                                                             {
-                                                                                 Path = memberPath,
-                                                                                 Options = options
-                                                                             });
-                                        return true;
-                                    });
+            return ExecuteWriteSession(session => session.IndexCatalog.EnsureIndex(new IndexDefinition
+                                                                                       {
+                                                                                           Path = memberPath,
+                                                                                           Options = options
+                                                                                       }));
         }
 
         public bool DropIndex(string memberPath)
         {
-            return ExecuteWriteSession(session => { return session.IndexCatalog.DropIndex(memberPath); });
+            return ExecuteWriteSession(session => session.IndexCatalog.DropIndex(memberPath));
         }
 
         #endregion

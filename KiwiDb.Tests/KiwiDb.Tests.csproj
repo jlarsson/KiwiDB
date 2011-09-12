@@ -58,6 +58,7 @@
     <Compile Include="JsonDb\FindFixture.cs" />
     <Compile Include="JsonDb\Index\ArrayIndexingFixture.cs" />
     <Compile Include="JsonDb\Index\DateIndexFixture.cs" />
+    <Compile Include="JsonDb\Index\EnsureIndexFixture.cs" />
     <Compile Include="JsonDb\Index\IndexValueFactoryFixture.cs" />
     <Compile Include="JsonDb\Index\StringIndexFixture.cs" />
     <Compile Include="JsonDb\IsolatedDatabaseFixture.cs" />

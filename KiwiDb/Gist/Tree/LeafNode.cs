@@ -29,6 +29,11 @@ namespace KiwiDb.Gist.Tree
             get { return Records.GetMaxKey(); }
         }
 
+        public override bool IsEmpty
+        {
+            get { return Records.Count == 0; }
+        }
+
         protected override IEnumerable<INode<TKey, TValue>> Split()
         {
             return Records.Split().Select(CreateNode);

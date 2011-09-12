@@ -124,6 +124,13 @@ namespace KiwiDb.Gist.Tree
 
         protected bool HandleUpdate(Action<IList<KeyValuePair<TKey, int>>> replaced)
         {
+            if (IsEmpty)
+            {
+                replaced(new KeyValuePair<TKey, int>[0]);
+                return true;
+            }
+            
+
             var newData = GetBytes();
             if (!IsLargeData(newData))
             {
@@ -142,6 +149,8 @@ namespace KiwiDb.Gist.Tree
             }
             return true;
         }
+
+        public abstract bool IsEmpty { get; }
 
         protected abstract IEnumerable<INode<TKey, TValue>> Split();
 

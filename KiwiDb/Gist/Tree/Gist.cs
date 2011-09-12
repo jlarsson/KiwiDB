@@ -74,7 +74,11 @@ namespace KiwiDb.Gist.Tree
                             added =>
                                 {
                                     Config.Blocks.FreeBlock(blockId);
-                                    if (added.Count == 1)
+                                    if (added.Count == 0)
+                                    {
+                                        BlockReference.BlockId = 0;
+                                    }
+                                    else if (added.Count == 1)
                                     {
                                         BlockReference.BlockId =
                                             added[0].Value;
@@ -105,7 +109,6 @@ namespace KiwiDb.Gist.Tree
             if (BlockReference.BlockId != 0)
             {
                 Node<TKey, TValue>.GetNode(Config, BlockReference.BlockId).Drop();
-                Config.Blocks.FreeBlock(BlockReference.BlockId);
             }
         }
 

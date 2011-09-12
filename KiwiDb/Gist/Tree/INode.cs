@@ -8,14 +8,11 @@ namespace KiwiDb.Gist.Tree
     {
         TKey MaxKey { get; }
         IBlock Block { get; }
-
-
+        bool IsEmpty { get; }
         IEnumerable<KeyValuePair<TKey, TValue>> Scan();
         IEnumerable<KeyValuePair<TKey, TValue>> Find(TKey key);
         bool Insert(TKey key, TValue value, Action<IList<KeyValuePair<TKey, int>>> replaced);
-        bool Remove(TKey key, Func<KeyValuePair<TKey, TValue>, bool> filter,
-                    Action<IList<KeyValuePair<TKey, int>>> replaced);
-
+        bool Remove(TKey key, Func<KeyValuePair<TKey, TValue>, bool> filter, Action<IList<KeyValuePair<TKey, int>>> replaced);
         void Drop();
     }
 }

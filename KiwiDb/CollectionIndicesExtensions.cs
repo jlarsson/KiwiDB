@@ -4,9 +4,9 @@ namespace KiwiDb
 {
     public static class CollectionIndicesExtensions
     {
-        public static void EnsureIndex(this ICollectionIndices indices, string memberPath)
+        public static bool EnsureIndex(this ICollectionIndices indices, string memberPath)
         {
-            indices.EnsureIndex(memberPath, new IndexOptions());
+            return indices.EnsureIndex(memberPath, new IndexOptions());
         }
     }
 }

@@ -48,9 +48,9 @@ namespace KiwiDb.JsonDb.Index
 
         #region IIndexCatalog Members
 
-        public IEnumerable<KeyValuePair<string, IIndex>> EnumerateIndices
+        public IEnumerable<KeyValuePair<string, IndexOptions>> EnumerateIndices
         {
-            get { return IndexCache.Select(kv => new KeyValuePair<string, IIndex>(kv.Key, kv.Value)); }
+            get { return IndexCache.Select(kv => new KeyValuePair<string, IndexOptions>(kv.Key, kv.Value.IndexDefinition.Options)); }
         }
 
         public IIndex GetIndex(string memberPath)
@@ -59,20 +59,28 @@ namespace KiwiDb.JsonDb.Index
             return IndexCache.TryGetValue(memberPath, out indexWrapper) ? indexWrapper : null;
         }
 
-        public void EnsureIndex(IndexDefinition indexDefinition)
+        public bool EnsureIndex(IndexDefinition indexDefinition)
         {
-            if (Find(indexDefinition.Path).Count() == 0)
+            IndexWrapper existing;
+            if (IndexCache.TryGetValue(indexDefinition.Path, out existing))
             {
-                var index = new IndexWrapper(this, indexDefinition) {IsChanged = true};
-                IndexCache.Add(indexDefinition.Path, index);
-                Insert(indexDefinition.Path, JSON.FromObject(indexDefinition));
-
-                // rebuild index
-                foreach (var record in MasterTable.Scan())
+                if (indexDefinition.Options.Equals(existing.IndexDefinition.Options))
                 {
-                    UpdateIndex(record.Key, null, record.Value);
+                    return false;
                 }
+                DropIndex(indexDefinition.Path);
             }
+
+            var index = new IndexWrapper(this, indexDefinition) {IsChanged = true};
+            IndexCache.Add(indexDefinition.Path, index);
+            Insert(indexDefinition.Path, JSON.FromObject(indexDefinition));
+
+            // rebuild index
+            foreach (var record in MasterTable.Scan())
+            {
+                UpdateIndex(record.Key, null, record.Value);
+            }
+            return true;
         }
 
         public bool DropIndex(string memberPath)
