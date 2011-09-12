@@ -1,4 +1,6 @@
-namespace KiwiDb.JsonDb
+using KiwiDb.JsonDb;
+
+namespace KiwiDb
 {
     public static class CollectionIndicesExtensions
     {

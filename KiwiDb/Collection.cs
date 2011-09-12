@@ -1,8 +1,9 @@
 ﻿using System;
+using KiwiDb.JsonDb;
 using KiwiDb.JsonDb.Index;
 using KiwiDb.Storage;
 
-namespace KiwiDb.JsonDb
+namespace KiwiDb
 {
     public class Collection : CollectionBase
     {

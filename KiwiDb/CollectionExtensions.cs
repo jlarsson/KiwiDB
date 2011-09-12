@@ -3,7 +3,7 @@ using System.Linq;
 using Kiwi.Json;
 using Kiwi.Json.Untyped;
 
-namespace KiwiDb.JsonDb
+namespace KiwiDb
 {
     public static class CollectionExtensions
     {

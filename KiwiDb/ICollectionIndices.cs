@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using KiwiDb.JsonDb;
 using KiwiDb.JsonDb.Index;
 
-namespace KiwiDb.JsonDb
+namespace KiwiDb
 {
     public interface ICollectionIndices
     {

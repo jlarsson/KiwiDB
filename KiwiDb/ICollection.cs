@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Kiwi.Json.Untyped;
+using KiwiDb.JsonDb;
 
-namespace KiwiDb.JsonDb
+namespace KiwiDb
 {
     public interface ICollection
     {
