@@ -137,7 +137,7 @@
     <None Include="KiwiDb.nuspec" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="LICENSE.txt" />
+    <None Include="LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(ProjectDir)\..\.nuget\NuGet.targets" />

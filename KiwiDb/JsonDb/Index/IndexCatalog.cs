@@ -158,14 +158,20 @@ namespace KiwiDb.JsonDb.Index
             }
             if (keys == null)
             {
-                return MasterTable.Scan();
+                // table scan
+                var filter = new JsonFilter(obj.JsonPathValues());
+                return from rec in MasterTable.Scan()
+                       where filter.Matches(rec.Value)
+                       select rec;
             }
-
-            var filter = new JsonFilter(obj.JsonPathValues().Where(pv => !indexPaths.Contains(pv.Path.Path)));
-            return from key in keys
-                   from rec in MasterTable.Find(key)
-                   where filter.Matches(rec.Value)
-                   select rec;
+            else
+            {
+                var filter = new JsonFilter(obj.JsonPathValues().Where(pv => !indexPaths.Contains(pv.Path.Path)));
+                return from key in keys
+                       from rec in MasterTable.Find(key)
+                       where filter.Matches(rec.Value)
+                       select rec;
+            }
         }
 
         public void SaveChanges()

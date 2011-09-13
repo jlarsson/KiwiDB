@@ -12,6 +12,6 @@
     <copyright>Copyright 2011</copyright>
   </metadata>
   <files>
-    <file src="bin\release\kiwi.json.dll" target="lib\net40"></file>
+    <file src="bin\release\kiwi.json.dll" target="lib\net40" />
   </files>
 </package>
