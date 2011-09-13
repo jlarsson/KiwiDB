@@ -20,7 +20,7 @@ namespace KiwiDb.JsonDb.Index
         {
         }
 
-        public IndexValue(long value)
+        public IndexValue(int value)
             : this(IndexValueType.Integer, value)
         {
         }

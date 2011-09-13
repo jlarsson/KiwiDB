@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Linq;
+using Kiwi.Json.Untyped;
 using KiwiDb.JsonDb;
 using NUnit.Framework;
 
@@ -40,6 +42,52 @@ namespace KiwiDb.Tests.JsonDb.Index
             Assert.That(
                 () => coll.Indices.EnsureIndex("X", new IndexOptions(){IsUnique = true}),
                 Throws.TypeOf<DuplicateKeyException>());
+        }
+
+        [Test]
+        public void IndexWithExclusionList()
+        {
+            var coll = GetCollection();
+            Assert.IsTrue(coll.Indices.EnsureIndex("Value",
+                                                   new IndexOptions() {ExcludeValues = new object[] {0, 1, 2, 3, 4}}));
+
+            // Insert values 0..9 with keys "0".."9"
+            foreach (var i in Enumerable.Range(0,10))
+            {
+                coll.Update(i.ToString(), new {Value = i});
+            }
+
+            // Fetch the keys in the index...
+            var indexKeys = new List<string>();
+            coll.Indices.VisitIndex("Value", v => indexKeys.Add(v.Value));
+
+            // and ensure that the first 5 was skipped
+            CollectionAssert.AreEqual(
+                new []{"5","6","7","8","9"},
+                indexKeys);
+        }
+
+        [Test]
+        public void IndexWithInclusionList()
+        {
+            var coll = GetCollection();
+            Assert.IsTrue(coll.Indices.EnsureIndex("Value",
+                                                   new IndexOptions() { IncludeValues = new object[] { 0, 1, 2, 3, 4 } }));
+
+            // Insert values 0..9 with keys "0".."9"
+            foreach (var i in Enumerable.Range(0, 10))
+            {
+                coll.Update(i.ToString(), new { Value = i });
+            }
+
+            // Fetch the keys in the index...
+            var indexKeys = new List<string>();
+            coll.Indices.VisitIndex("Value", v => indexKeys.Add(v.Value));
+
+            // and ensure that only the first 5 is there
+            CollectionAssert.AreEqual(
+                new[] { "0", "1", "2", "3", "4" },
+                indexKeys);
         }
     }
 }

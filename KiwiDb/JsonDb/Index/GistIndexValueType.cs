@@ -36,7 +36,7 @@ namespace KiwiDb.JsonDb.Index
                     case IndexValueType.DateTime:
                         return DateTimeComparer.Compare((DateTime) x.Value, (DateTime) y.Value);
                     case IndexValueType.Integer:
-                        return IntegerComparer.Compare((Int64) x.Value, (Int64) y.Value);
+                        return IntegerComparer.Compare((Int32) x.Value, (Int32) y.Value);
                     case IndexValueType.Number:
                         return NumberComparer.Compare((double) x.Value, (double) y.Value);
                     case IndexValueType.String:
@@ -70,7 +70,7 @@ namespace KiwiDb.JsonDb.Index
                 case IndexValueType.DateTime:
                     return new IndexValue(DateTime.FromBinary(reader.ReadInt64()));
                 case IndexValueType.Integer:
-                    return new IndexValue(reader.ReadInt64());
+                    return new IndexValue(reader.ReadInt32());
                 case IndexValueType.Number:
                     return new IndexValue(reader.ReadDouble());
                 case IndexValueType.String:
@@ -94,7 +94,7 @@ namespace KiwiDb.JsonDb.Index
                     writer.Write(((DateTime) value.Value).ToBinary());
                     break;
                 case IndexValueType.Integer:
-                    writer.Write((Int64) value.Value);
+                    writer.Write((Int32) value.Value);
                     break;
                 case IndexValueType.Number:
                     writer.Write((double) value.Value);

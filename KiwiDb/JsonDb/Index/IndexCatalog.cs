@@ -61,14 +61,27 @@ namespace KiwiDb.JsonDb.Index
 
         public bool EnsureIndex(IndexDefinition indexDefinition)
         {
+            // Try to not rebuild index, so we check if there exists an equal defintion already
             IndexWrapper existing;
             if (IndexCache.TryGetValue(indexDefinition.Path, out existing))
             {
                 if (indexDefinition.Options.Equals(existing.IndexDefinition.Options))
                 {
+                    // phew, existing index was already matching. bail out
                     return false;
                 }
                 DropIndex(indexDefinition.Path);
+            }
+
+            // An index can not both exclude certain values and at the same time include certain values
+            var hasIncludeValues = (indexDefinition.Options.IncludeValues != null) &&
+                                   (indexDefinition.Options.IncludeValues.Length > 0);
+            var hasExcludeValues = (indexDefinition.Options.ExcludeValues != null) &&
+                                   (indexDefinition.Options.ExcludeValues.Length > 0);
+
+            if (hasIncludeValues && hasExcludeValues)
+            {
+                throw new KiwiDbException("An index can not have an exclusion list and an inclusion list at the same time.");
             }
 
             var index = new IndexWrapper(this, indexDefinition) {IsChanged = true};
@@ -192,8 +205,64 @@ namespace KiwiDb.JsonDb.Index
             return obj == null
                        ? Enumerable.Empty<Tuple<IndexWrapper, IndexValue>>()
                        : from index in IndexCache
+                         let valueFilter = CreateIndexValueFilter(index.Value.IndexDefinition.Options)
                          from indexValue in IndexValueFactory.GetIndexValues(obj, index.Key)
+                         where valueFilter.Filter(indexValue)
                          select Tuple.Create(index.Value, indexValue);
+        }
+
+        private IIndexValueFilter CreateIndexValueFilter(IndexOptions options)
+        {
+            if ((options.ExcludeValues != null) && (options.ExcludeValues.Length > 0))
+            {
+                return new ExcludeIndexValueFilter(options.ExcludeValues);
+            }
+            if ((options.IncludeValues != null) && (options.IncludeValues.Length > 0))
+            {
+                return new IncludeIndexValueFilter(options.IncludeValues);
+            }
+            return new NullIndexValueFilter();
+        }
+
+        private class ExcludeIndexValueFilter : IIndexValueFilter
+        {
+            private readonly HashSet<object> _values;
+            public ExcludeIndexValueFilter(IEnumerable<object> excludeValues)
+            {
+                _values = new HashSet<object>(excludeValues);
+            }
+
+            public bool Filter(IndexValue indexValue)
+            {
+                return !_values.Contains(indexValue.Value);
+            }
+        }
+
+        private class IncludeIndexValueFilter : IIndexValueFilter
+        {
+            private readonly HashSet<object> _values;
+            public IncludeIndexValueFilter(IEnumerable<object> includeValues)
+            {
+                _values = new HashSet<object>(includeValues);
+            }
+
+            public bool Filter(IndexValue indexValue)
+            {
+                return _values.Contains(indexValue.Value);
+            }
+        }
+
+        private class NullIndexValueFilter : IIndexValueFilter
+        {
+            public bool Filter(IndexValue indexValue)
+            {
+                return true;
+            }
+        }
+
+        private interface IIndexValueFilter
+        {
+            bool Filter(IndexValue indexValue);
         }
 
         #region Nested type: IndexWrapper

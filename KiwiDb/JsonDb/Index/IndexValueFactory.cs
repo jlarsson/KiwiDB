@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Kiwi.Json.JPath;
@@ -10,6 +11,31 @@ namespace KiwiDb.JsonDb.Index
         private readonly IndexValueVisitor _visitor = new IndexValueVisitor();
 
         #region IIndexValueFactory Members
+
+        public IndexValue GetIndexValue(object o)
+        {
+            if (o == null)
+            {
+                return new IndexValue();
+            }
+            if ((o is sbyte) || (o is short) || (o is int) || (o is long))
+            {
+                return new IndexValue((long) o);
+            }
+            if ((o is byte) || (o is ushort) || (o is uint) || (o is ulong))
+            {
+                return new IndexValue((long)o);
+            }
+            if (o is string)
+            {
+                return new IndexValue((string)o);
+            }
+            if (o is DateTime)
+            {
+                return new IndexValue((DateTime)o);
+            }
+            return new IndexValue();
+        }
 
         public IEnumerable<IndexValue> GetIndexValues(IJsonValue value, string memberPath)
         {
