@@ -3,6 +3,7 @@ bin/
 obj/
 *.user
 *.suo
+*.dll
 *.pdb
 *.nupkg
 _resharper*
