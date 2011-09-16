@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Kiwi.Json;
 using KiwiDb;
 
 namespace PerfTest
@@ -65,7 +64,7 @@ namespace PerfTest
             foreach (var post in GetTestData(n))
             {
                 ++count;
-                coll.Update(post.DataId, JSON.FromObject(post));
+                coll.Update(post.DataId, post);
             }
             return count;
         }
@@ -103,8 +102,7 @@ namespace PerfTest
                                              foreach (var post in GetTestData(n))
                                              {
                                                  ++count;
-                                                 c.Update(post.DataId,
-                                                          JSON.FromObject(post));
+                                                 c.Update(post.DataId, post);
                                              }
                                              return count;
                                          });
