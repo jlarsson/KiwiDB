@@ -1,3 +1,6 @@
 [submodule "lib/Kiwi.Json"]
 	path = lib/Kiwi.Json
 	url = git@github.com:jlarsson/Kiwi.Json
+[submodule "ext/Kiwi.Json"]
+	path = ext/Kiwi.Json
+	url = git@github.com:jlarsson/Kiwi.Json.git
