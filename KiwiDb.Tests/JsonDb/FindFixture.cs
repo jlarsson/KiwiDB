@@ -21,7 +21,7 @@ namespace KiwiDb.Tests.JsonDb
                                                return null;
                                            };
 
-            var objects = (from i in Enumerable.Range(0, 10000)
+            var objects = (from i in Enumerable.Range(0, 100)
                            select new
                                       {
                                           Key = i.ToString(),

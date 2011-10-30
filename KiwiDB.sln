@@ -9,14 +9,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerfTest", "PerfTest\PerfTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kiwi.Json", "ext\Kiwi.Json\Kiwi.Json\Kiwi.Json.csproj", "{C32E21F8-0929-45BC-9643-0F1DE746A4CD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "psake", "psake", "{9A50F5F6-270F-4C25-A1EA-3FD9A8A9F550}"
+	ProjectSection(SolutionItems) = preProject
+		default.ps1 = default.ps1
+		psake_ext.ps1 = psake_ext.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
-		Debug|Mixed Platforms = Debug|Mixed Platforms
-		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
-		Release|Mixed Platforms = Release|Mixed Platforms
-		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{DE9B2945-9E1F-4C4B-8E35-109B5EFABC24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -39,9 +41,9 @@ Global
 		{C3B7812B-E844-4A03-A974-A4765AA3C981}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{C3B7812B-E844-4A03-A974-A4765AA3C981}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C3B7812B-E844-4A03-A974-A4765AA3C981}.Release|x86.ActiveCfg = Release|Any CPU
-		{503982C1-F7A8-4760-999C-02C40C78586C}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{503982C1-F7A8-4760-999C-02C40C78586C}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{503982C1-F7A8-4760-999C-02C40C78586C}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{503982C1-F7A8-4760-999C-02C40C78586C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{503982C1-F7A8-4760-999C-02C40C78586C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{503982C1-F7A8-4760-999C-02C40C78586C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{503982C1-F7A8-4760-999C-02C40C78586C}.Debug|x86.ActiveCfg = Debug|x86
 		{503982C1-F7A8-4760-999C-02C40C78586C}.Debug|x86.Build.0 = Debug|x86
 		{503982C1-F7A8-4760-999C-02C40C78586C}.Release|Any CPU.ActiveCfg = Release|x86
