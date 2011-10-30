@@ -30,6 +30,11 @@ Get submodules (Kiwi.Json)
 * git submodule sync
 * git submodule update
 
+Update NuGet dependencies.
+
+* PM> Install-Package NuGetPowerTools
+* PM> Enable-PackageRestore
+
 ## Contribute
 
 Contributors are welcome. Create a fork on github and send me pull requests.
