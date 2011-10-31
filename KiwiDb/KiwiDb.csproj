@@ -128,11 +128,9 @@
     <Compile Include="Util\Verify.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="build-packages.cmd" />
     <None Include="KiwiDb.nuspec">
       <SubType>Designer</SubType>
     </None>
-    <None Include="nuget-pack.psake" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LICENSE.txt" />
