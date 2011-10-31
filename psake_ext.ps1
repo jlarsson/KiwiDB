@@ -86,7 +86,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersionAttribute(""$($project.version)"")]
 [assembly: AssemblyDelaySignAttribute(false)]
 "
-
 	$file = $project.assemblyinfo_file
 	Ensure-File-Directory $file
 	Write-Host "Generating assembly info file: $file"

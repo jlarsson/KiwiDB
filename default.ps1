@@ -4,20 +4,19 @@ properties {
 	$build_platform = "Any CPU"
 	$build_dir = join-path $base_dir "build\4.0\"
 	$build_properties = "OutDir=$build_dir;Configuration=$build_configuration;Platform=$build_platform"
-	$pack_dir = join-path $base_dir "packs"
+	$pack_dir = join-path $base_dir "build\packs"
 	$solutions = ("KiwiDb.sln")
+
 	$kiwidb = Create-Project-Description `
 		-base_dir $base_dir `
 		-project_name "KiwiDb" `
 		-id "KiwiDb" `
 		-author "Joakim Larsson" `
-		-description "KiwiDB embedded document database manager" `
-		-copyright "Copyright © Joakim Larsson 2011" `
+		-description "Embedded document database for .NET" `
+		-copyright "Copyright © Joakim Larsson 2011"
 
 	$projects = ($kiwidb)
 }
-
-
 
 $framework = '4.0'
 
@@ -41,10 +40,12 @@ task pack -depends build {
 	Ensure-Directory $pack_dir
 	$projects | foreach { `
 		$p = $_
-		$props = "id=$($p.id);version=$($p.version);title=$($p.title);author=$($p.author);description=$($p.description);copyright=$($p.copyright)"
+		$copy_folders = ("tools","content")
+		$copy_folders | foreach { Copy-Item  -path  (join-path $p.project_dir $_) -destination $build_dir -force  -recurse -ErrorAction SilentlyContinue }
+		$props = "id=$($p.id);version=$($p.version);title=$($p.title);author=$($p.author);description=$($p.description);copyright=$($p.copyright);root=$($build_dir);"
 		(.nuget\nuget pack $p.nuspec_file `
 			-p $props `
-			-basePath $base_dir `
+			-basePath $build_dir `
 			-o $pack_dir) `
 	}
 }

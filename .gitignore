@@ -1,32 +1,14 @@
-
-#ignore thumbnails created by windows
-Thumbs.db
-# ignore NuGet stuff
 packages/
-*.nupkg
-#Ignore files build by Visual Studio
-*.obj
-*.exe
-*.pdb
-*.user
-*.aps
-*.pch
-*.vspscc
-*_i.c
-*_p.c
-*.ncb
-*.suo
-*.tlb
-*.tlh
-*.bak
-*.cache
-*.ilk
-*.log
-[Bb]in
-[Dd]ebug*/
-*.lib
-*.sbr
+bin/
 obj/
-[Rr]elease*/
-_ReSharper*/
-[Tt]est[Rr]esult*
+cache/
+build/
+*.user
+*.suo
+*.dll
+*.pdb
+*.nupkg
+*.gpState
+_resharper*
+*.cache
+Thumbs.db

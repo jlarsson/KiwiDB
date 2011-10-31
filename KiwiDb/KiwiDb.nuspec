@@ -9,13 +9,12 @@
     <projectUrl>https://github.com/jlarsson/KiwiDB</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <copyright>Copyright 2011</copyright>
-    <dependencies>
-      <dependency id="Kiwi.Json" version="1.1" />
-    </dependencies>
+    <copyright>$copyright$</copyright>
   </metadata>
   <files>
-    <file src="build\4.0\kiwidb.dll" target="lib\net40" />
-    <file src="build\4.0\kiwidb.pdb" target="lib\net40" />
+    <file src="KiwiDb.dll" target="lib\net40" />
+    <file src="KiwiDb.pdb" target="lib\net40" />
+    <file src="Kiwi.Json.dll" target="lib\net40" />
+    <file src="Kiwi.Json.pdb" target="lib\net40" />
   </files>
 </package>
