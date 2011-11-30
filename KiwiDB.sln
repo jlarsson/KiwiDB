@@ -7,15 +7,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KiwiDb.Tests", "KiwiDb.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerfTest", "PerfTest\PerfTest.csproj", "{503982C1-F7A8-4760-999C-02C40C78586C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kiwi.Json", "ext\Kiwi.Json\Kiwi.Json\Kiwi.Json.csproj", "{C32E21F8-0929-45BC-9643-0F1DE746A4CD}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "psake", "psake", "{9A50F5F6-270F-4C25-A1EA-3FD9A8A9F550}"
 	ProjectSection(SolutionItems) = preProject
 		default.ps1 = default.ps1
 		psake_ext.ps1 = psake_ext.ps1
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kiwi.Json.Tests", "ext\Kiwi.Json\Kiwi.Json.Tests\Kiwi.Json.Tests.csproj", "{7875D9A6-1097-44A9-8C71-69B0BA4A5512}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kiwi.Json", "lib\Kiwi.Json\Kiwi.Json\Kiwi.Json.csproj", "{C32E21F8-0929-45BC-9643-0F1DE746A4CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kiwi.Json.Tests", "lib\Kiwi.Json\Kiwi.Json.Tests\Kiwi.Json.Tests.csproj", "{7875D9A6-1097-44A9-8C71-69B0BA4A5512}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
